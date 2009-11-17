@@ -15,6 +15,12 @@
 	(setf content (+ content weight))
 	(error "Value is outside the bin!"))))
 
+(defmethod bin1d-print ((bin bin1d))
+  (with-slots (xmin xmax content) bin
+    (format t (concatenate 'string "xmin = " (write-to-string xmin)
+			   " xmax = " (write-to-string xmax)
+			   " content = " (write-to-string content)))))
+
 (defun create-linear-binning (nbins xmin xmax)
   (let* ((width (/ (- xmax xmin) nbins))
 	 (right-edge (+ xmin width)))
@@ -30,8 +36,19 @@
    (xmax :initarg :xmax :initform (error "Histogram needs maximum x value"))
    (binning :initarg :binning)))
 
-(defun translate-to-asy (&body 
+(defmethod histo1d-fill ((histo histo1d) value weight)
+  (with-slots (binning) histo
+    (dolist (bin binning)
+      (with-slots (xmin xmax) bin 
+	(if (and (>= value xmin) (< value xmax))
+	    (bin1d-fill bin value weight))))))
 
-(defun plot (p)
-  nil)
+(defmethod histo1d-print ((histo histo1d))
+  (with-slots (binning) histo
+    (dolist (bin binning)
+      (bin1d-print bin))))
 
+;;(defmethod histo1d-plot ((histo histo1d))
+;;  nil)
+
+;;(defun make-histo1d (&key 
