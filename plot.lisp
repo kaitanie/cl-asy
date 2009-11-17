@@ -1,6 +1,9 @@
 (defpackage :cl-asy
   (:use :common-lisp)
-  (:export :plot))
+  (:export :histo1d
+	   :histo1d-fill
+	   :histo1d-print
+	   :create-linear-binning))
 
 (in-package :cl-asy)
 
@@ -35,6 +38,10 @@
    (xmin :initarg :xmin :initform (error "Histogram needs minimum x value"))
    (xmax :initarg :xmax :initform (error "Histogram needs maximum x value"))
    (binning :initarg :binning)))
+
+(defmethod initialize-instance :after ((histo histo1d) &key)
+  (with-slots (bins xmin xmax binning) histo
+    (setf binning (create-linear-binning bins xmin xmax))))
 
 (defmethod histo1d-fill ((histo histo1d) value weight)
   (with-slots (binning) histo
