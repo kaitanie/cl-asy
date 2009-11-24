@@ -37,11 +37,14 @@
    (bins :initarg :bins :initform (error "Histogram needs number of bins"))
    (xmin :initarg :xmin :initform (error "Histogram needs minimum x value"))
    (xmax :initarg :xmax :initform (error "Histogram needs maximum x value"))
-   (binning :initarg :binning)))
+   (manual-binning :initarg :manual-binning :initform nil)
+   (binning :initarg :binning :initform '())))
 
 (defmethod initialize-instance :after ((histo histo1d) &key)
-  (with-slots (bins xmin xmax binning) histo
-    (setf binning (create-linear-binning bins xmin xmax))))
+  (with-slots (bins xmin xmax manual-binning binning) histo
+    (if (not manual-binning)
+	(setf binning (create-linear-binning bins xmin xmax))
+	(setf binning '()))))
 
 (defmethod histo1d-fill ((histo histo1d) value weight)
   (with-slots (binning) histo
@@ -54,6 +57,17 @@
   (with-slots (binning) histo
     (dolist (bin binning)
       (bin1d-print bin))))
+
+(defmethod histo1d-create-from-binning ((histo histo1d) x-mins x-maxs contents)
+  (with-slots (binning) histo
+	(setf binning (append binning
+			      (list (make-instance 'bin1d 
+						   :xmin (first x-mins)
+						   :xmax (first x-maxs)
+						   :content (first contents)))))
+	(if (first (rest contents))
+	    (histo1d-create-from-binning histo (rest x-mins) (rest x-maxs) (rest contents)))))
+      
 
 ;;(defmethod histo1d-plot ((histo histo1d))
 ;;  nil)
