@@ -55,6 +55,22 @@
     (dolist (bin binning)
       (bin1d-print bin))))
 
+(defun array-as-string (arr)
+  (let ((str "")
+	(len (list-length arr))
+	(i 0))
+    (dolist (item arr)
+      (progn
+	(setf i (+ i 1))
+	(if (> i 1)
+	    (setf str (concatenate 'string str ", " (write-to-string item)))
+	    (setf str (concatenate 'string str (write-to-string item))))))
+    str))
+
+(defun generate-array-definition (variable type data)
+  (format t (concatenate 'string type " " variable " = {"
+			 (array-as-string data) "};")))
+
 ;;(defmethod histo1d-plot ((histo histo1d))
 ;;  nil)
 
