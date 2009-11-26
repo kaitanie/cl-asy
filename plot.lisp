@@ -82,12 +82,12 @@
 
 (defun generate-array-definition (variable type data)
   (concatenate 'string type " " variable " = {"
-			 (array-as-string data) "};"))
+			 (array-as-string data) "};~%"))
 
 (defmacro generate-function (name return-type list-of-args &rest body)
   `(concatenate 'string
-		,return-type ,name "()"
-		"{"
+		,return-type " ",name "()~%"
+		"{~%"
 		,@body
 		"}"))
 
