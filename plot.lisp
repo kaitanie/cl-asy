@@ -91,7 +91,16 @@
 		,@body
 		"}"))
 
-;;(defmethod histo1d-plot ((histo histo1d))
-;;  nil)
+(defmethod histo1d-plot ((histo histo1d))
+  (with-slots (name binning) histo
+    (let* ((x-array '())
+	  (contents-array '()))
+      (dolist (bin binning)
+	(with-slots (xmin xmax content) bin
+	  (setf x-array (append x-array (list xmin)))
+	  (setf contents-array (append contents-array (list content)))))
+      (generate-function name "void" '()
+			 (generate-array-definition "x" "real[]" x-array)
+			 (generate-array-definition "x" "real[]" contents-array)))))
 
 ;;(defun make-histo1d (&key 
