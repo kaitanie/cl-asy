@@ -101,6 +101,6 @@
 	  (setf contents-array (append contents-array (list content)))))
       (generate-function name "void" '()
 			 (generate-array-definition "x" "real[]" x-array)
-			 (generate-array-definition "x" "real[]" contents-array)))))
+			 (generate-array-definition "y" "real[]" contents-array)))))
 
 ;;(defun make-histo1d (&key 
