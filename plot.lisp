@@ -91,6 +91,10 @@
 		,@body
 		"}"))
 
+(defun generate-histo-plot-command (x-var y-var)
+  (concatenate 'string
+	       "histogram(" x-var ", " y-var ", nullpen, black, false);"))
+
 (defmethod histo1d-plot ((histo histo1d))
   (with-slots (name binning) histo
     (let* ((x-array '())
