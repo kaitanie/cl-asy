@@ -116,7 +116,7 @@
   (concatenate 'string
 	       "import graph;~%"
 	       "import stats;~%"
-	       "size(10cm, 10cm, IgnoreAspect);~%"))
+	       "size(20cm, 20cm, IgnoreAspect);~%"))
 
 (defun test-histo1 ()
   (let* ((h1 (make-instance 'histo1d :name "h1" :xmin 0.0 :xmax 1.0 :bins 100)))
