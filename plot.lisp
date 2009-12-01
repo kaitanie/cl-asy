@@ -90,7 +90,7 @@
 		,return-type " ",name "()~%"
 		"{~%"
 		,@body
-		"}"))
+		"}~%"))
 
 (defun generate-histo-plot-command (x-var y-var)
   (concatenate 'string
