@@ -114,9 +114,9 @@
 
 (defun generate-asy-header ()
   (concatenate 'string
-	       "import graph%"
-	       "import stats~%"
-	       "size(400, 400);~%"))
+	       "import graph;~%"
+	       "import stats;~%"
+	       "size(10cm, 10cm, IgnoreAspect);~%"))
 
 (defun test-histo1 ()
   (let* ((h1 (make-instance 'histo1d :name "h1" :xmin 0.0 :xmax 1.0 :bins 100)))
@@ -130,6 +130,12 @@
 				       :if-exists :supersede)
     (format t (generate-asy-header))
     (format t (test-histo1))
-    (format t "plot_h1();~%")))
+    (format t "plot_h1();~%")
+    (format t "xaxis(\"$x$\",BottomTop,LeftTicks);~%")
+    (format t "yaxis(\"$dP/dx$\",LeftRight,RightTicks(trailingzero));~%")))
+
+;;xaxis("$x$",BottomTop,LeftTicks);
+;;yaxis("$dP/dx$",LeftRight,RightTicks(trailingzero));
+
 
 ;;(defun make-histo1d (&key 
