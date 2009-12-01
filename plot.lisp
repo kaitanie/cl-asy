@@ -99,13 +99,37 @@
 (defmethod histo1d-plot ((histo histo1d))
   (with-slots (name binning) histo
     (let* ((x-array '())
-	  (contents-array '()))
+	   (contents-array '())
+	   (plot-function-name (concatenate 'string "plot_" name)))
       (dolist (bin binning)
 	(with-slots (xmin xmax content) bin
-	  (setf x-array (append x-array (list xmin)))
+	  (if (eq x-array '())
+	      (setf x-array (append x-array (list xmin))))
+	  (setf x-array (append x-array (list xmax)))
 	  (setf contents-array (append contents-array (list content)))))
-      (generate-function name "void" '()
+      (generate-function (concatenate 'string "plot_" name) "void" '()
 			 (generate-array-definition "x" "real[]" x-array)
-			 (generate-array-definition "y" "real[]" contents-array)))))
+			 (generate-array-definition "y" "real[]" contents-array)
+			 (generate-histo-plot-command "x" "y")))))
+
+(defun generate-asy-header ()
+  (concatenate 'string
+	       "import graph%"
+	       "import stats~%"
+	       "size(400, 400);~%"))
+
+(defun test-histo1 ()
+  (let* ((h1 (make-instance 'histo1d :name "h1" :xmin 0.0 :xmax 1.0 :bins 100)))
+    (loop
+	 for i from 1 to 1000
+	 do (histo1d-fill h1 (random 1.0) 1.0))
+    (histo1d-plot h1)))
+
+(defun plot-histo1 (output-file)
+  (with-open-file (*standard-output* output-file :direction :output
+				       :if-exists :supersede)
+    (format t (generate-asy-header))
+    (format t (test-histo1))
+    (format t "plot_h1();~%")))
 
 ;;(defun make-histo1d (&key 
