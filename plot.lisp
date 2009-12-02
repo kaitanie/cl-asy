@@ -119,7 +119,7 @@
 	       "size(20cm, 20cm, IgnoreAspect);~%"))
 
 (defun test-histo1 ()
-  (let* ((h1 (make-instance 'histo1d :name "h1" :xmin 0.0 :xmax 1.0 :bins 100)))
+  (let ((h1 (make-instance 'histo1d :name "h1" :xmin 0.0 :xmax 1.0 :bins 100)))
     (loop
 	 for i from 1 to 1000
 	 do (histo1d-fill h1 (random 1.0) 1.0))
