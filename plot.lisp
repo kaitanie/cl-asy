@@ -22,7 +22,7 @@
   (with-slots (xmin xmax content) bin
     (format t (concatenate 'string "xmin = " (write-to-string xmin)
 			   " xmax = " (write-to-string xmax)
-			   " content = " (write-to-string content)))))
+			   " content = " (write-to-string content) "~%"))))
 
 (defun create-linear-binning (nbins xmin xmax)
   (let* ((width (/ (- xmax xmin) nbins))
