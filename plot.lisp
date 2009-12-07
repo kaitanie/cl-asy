@@ -145,5 +145,22 @@
 ;;xaxis("$x$",BottomTop,LeftTicks);
 ;;yaxis("$dP/dx$",LeftRight,RightTicks(trailingzero));
 
+(defstruct bin-content
+  (xmin 0.0)
+  (xmax 0.0)
+  (content 0.0))
 
-;;(defun make-histo1d (&key 
+;; Bin-content-list contains (xmin xmax content) for each bin
+(defun make-histo-from-data (name bins bin-content-list)
+  (let ((histo (make-instance 'histo1d
+			      :name name
+			      :xmin (bin-content-xmin (first bin-content-list))
+			      :xmax (bin-content-xmax (first (last bin-content-list)))
+			      :bins bins
+			      :manual-binning t)))
+     (dolist (bin-data bin-content-list)
+       (histo1d-add-bin histo (make-instance 'bin1d
+					     :xmin (bin-content-xmin bin-data)
+					     :xmax (bin-content-xmax bin-data)
+					     :content (bin-content-content bin-data))))
+     histo))
