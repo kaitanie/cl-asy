@@ -52,7 +52,7 @@
 
 (defmethod histo1d-add-bin ((histo histo1d) bin)
   (with-slots (binning) histo
-    (append binning (list bin))))
+    (setf binning (append binning (list bin)))))
 
 (defmethod histo1d-fill ((histo histo1d) value weight)
   (with-slots (binning) histo
