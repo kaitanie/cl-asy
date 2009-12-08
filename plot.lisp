@@ -151,6 +151,10 @@
   (content 0.0))
 
 ;; Bin-content-list contains (xmin xmax content) for each bin
+;; Data-entry for a histogram:
+;; (defparameter *histo1* (make-histo-from-data "histo1" 10
+;;                           (list (make-bin-content 0.0 0.1) (make-bin-content 0.1 0.2 0.0)
+;;                           ...
 (defun make-histo-from-data (name bins bin-content-list)
   (let ((histo (make-instance 'histo1d
 			      :name name
