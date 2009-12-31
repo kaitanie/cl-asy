@@ -4,6 +4,8 @@
   :author "Pekka Kaitaniemi <pekka.kaitaniemi@gmail.com>"
   :license "BSD"
   :serial t
-  :components ((:file "plot"))
-)
+  :components ((:file "cl-asy")
+	       (:file "plot")
+	       (:file "datapoints"))
+  )
 ;;  :depends-on '())
