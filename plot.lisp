@@ -77,17 +77,17 @@
 	(if (first (rest contents))
 	    (histo1d-create-from-binning histo (rest x-mins) (rest x-maxs) (rest contents)))))
       
+(defun if-number-convert-to-string (x)
+  (if (stringp x)
+      x
+      (write-to-string x)))
+
 (defun array-as-string (arr)
-  (let ((str "")
-	(len (list-length arr))
-	(i 0))
-    (dolist (item arr)
-      (progn
-	(setf i (+ i 1))
-	(if (> i 1)
-	    (setf str (concatenate 'string str ", " (write-to-string item)))
-	    (setf str (concatenate 'string str (write-to-string item))))))
-    str))
+  (reduce #'(lambda (x y)
+	      (let ((x-str (if-number-convert-to-string x))
+		    (y-str (if-number-convert-to-string y)))
+		(concatenate 'string x-str ", " y-str)))
+	  arr))
 
 (defun generate-array-definition (variable type data)
   (concatenate 'string type " " variable " = {"
