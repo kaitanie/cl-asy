@@ -5,7 +5,8 @@
   :license "BSD"
   :serial t
   :components ((:file "cl-asy")
-	       (:file "plot")
-	       (:file "datapoints"))
+	       (:file "histo")
+	       (:file "datapoints")
+	       (:file "plot"))
   )
 ;;  :depends-on '())
