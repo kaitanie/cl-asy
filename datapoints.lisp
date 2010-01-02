@@ -51,7 +51,7 @@
   `(concatenate 'string "plot_" ,title "() {~%"
 		"x = {" (array-as-string ,list-of-xvalues) "};~%"
 		"y = {" (array-as-string ,list-of-yvalues) "};~%"
-		"points(x, y);~%"
+		"draw(graph(x,y,Hermite),\"" title "\",mark);~%"
 		"}~%"))
 
 (defmethod datagraph2d-plot ((graph2d datagraph2d))
