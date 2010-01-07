@@ -24,6 +24,11 @@
 		,@body
 		"}~%"))
 
+(defmacro generate-and-call-function (name return-type list-of-args &rest body)
+  `(concatenate 'string
+		(generate-function ,name ,return-type ,list-of-args ,@body)
+		,name "();~%"))
+
 (defun generate-histo-plot-command (x-var y-var)
   (concatenate 'string
 	       "histogram(" x-var ", " y-var ", nullpen, black, false);"))
@@ -39,10 +44,10 @@
 	      (setf x-array (append x-array (list xmin))))
 	  (setf x-array (append x-array (list xmax)))
 	  (setf contents-array (append contents-array (list content)))))
-      (generate-function (concatenate 'string "plot_" name) "void" '()
-			 (generate-array-definition "x" "real[]" x-array)
-			 (generate-array-definition "y" "real[]" contents-array)
-			 (generate-histo-plot-command "x" "y")))))
+      (generate-and-call-function (concatenate 'string "plot_" name) "void" '()
+				  (generate-array-definition "x" "real[]" x-array)
+				  (generate-array-definition "y" "real[]" contents-array)
+				  (generate-histo-plot-command "x" "y")))))
 
 (defun generate-asy-header ()
   (concatenate 'string
