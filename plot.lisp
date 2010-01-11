@@ -35,19 +35,19 @@
 
 (defmethod histo1d-plot ((histo histo1d))
   (with-slots (name binning) histo
-    (let* ((x-array '())
-	   (contents-array '())
-	   (plot-function-name (concatenate 'string "plot_" name)))
-      (dolist (bin binning)
-	(with-slots (xmin xmax content) bin
-	  (if (eq x-array '())
-	      (setf x-array (append x-array (list xmin))))
-	  (setf x-array (append x-array (list xmax)))
-	  (setf contents-array (append contents-array (list content)))))
-      (generate-and-call-function (concatenate 'string "plot_" name) "void" '()
-				  (generate-array-definition "x" "real[]" x-array)
-				  (generate-array-definition "y" "real[]" contents-array)
-				  (generate-histo-plot-command "x" "y")))))
+    (let ((x-array (append (list (bin1d-xmin (first binning)))
+			   (mapcar #'bin1d-xmax binning)))
+	  (contents-array (mapcar #'bin1d-content binning)))
+      (generate-and-call-function (concatenate
+				   'string
+				   "plot_" name)
+				  "void"
+				  '()
+				  (concatenate
+				   'string
+				   (generate-array-definition "x" "real[]" x-array)
+				   (generate-array-definition "y" "real[]" contents-array)
+				   (generate-histo-plot-command "x" "y"))))))
 
 (defun generate-asy-header ()
   (concatenate 'string
