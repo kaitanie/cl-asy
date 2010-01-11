@@ -15,7 +15,7 @@
 (defun generate-array-definition (variable type data)
   (concatenate 'string type " " variable " = {"
 			 (array-as-string data) "};"
-			 "// Array of length" (write-to-string (list-length data)) "~%"))
+			 "// Array of length " (write-to-string (list-length data)) "~%"))
 
 (defmacro generate-function (name return-type list-of-args &rest body)
   `(concatenate 'string
