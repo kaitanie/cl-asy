@@ -5,6 +5,18 @@
    (xmax :initarg :xmax :initform (error "Maximum edge required.."))
    (content :initarg :content :initform 0.0)))
 
+(defmethod bin1d-xmin ((bin bin1d))
+  (with-slots (xmin) bin
+    xmin))
+
+(defmethod bin1d-xmax ((bin bin1d))
+  (with-slots (xmax) bin
+    xmax))
+
+(defmethod bin1d-content ((bin bin1d))
+  (with-slots (content) bin
+    content))
+
 (defmethod bin1d-set-content ((bin bin1d) value)
   (with-slots (content) bin
     (setf content value)))
