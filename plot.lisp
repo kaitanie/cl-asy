@@ -1,16 +1,10 @@
 (in-package :cl-asy)
 
-(defun if-number-convert-to-string (x)
-  (if (stringp x)
-      x
-      (write-to-string x)))
-
-(defun array-as-string (arr)
-  (reduce #'(lambda (x y)
-	      (let ((x-str (if-number-convert-to-string x))
-		    (y-str (if-number-convert-to-string y)))
-		(concatenate 'string x-str ", " y-str)))
-	  arr))
+(defun array-as-string (array)
+  (let ((array-str (mapcar #'write-to-string array)))
+    (reduce #'(lambda (x y)
+		(concatenate 'string x ", " y))
+	    array-str)))
 
 (defun generate-array-definition (variable type data)
   (concatenate 'string type " " variable " = {"
