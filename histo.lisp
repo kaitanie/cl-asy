@@ -105,3 +105,49 @@
 					     :xmax (bin-content-xmax bin-data)
 					     :content (bin-content-content bin-data))))
      histo))
+
+(defun create-histogram-from-binning (&key ((:name name)) ((:title title))
+				      ((:nbins nbins)) ((:xmin xmin)) ((:xmax xmax))
+				      ((:binning binning)))
+  (make-instance 'histo1d :name name :title title
+		 :xmin xmin :xmax xmax :bins nbins
+		 :manual-binning t :binning binning))
+
+(defun example-histo-from-binning ()
+(create-histogram-from-binning :name "histo"
+:title "My histogram title"
+:nbins 10
+:binning (list
+(make-instance 'cl-asy:bin1d :xmin 0
+:xmax 0.1
+:content 0)
+(make-instance 'cl-asy:bin1d :xmin 0.1
+:xmax 0.2
+:content 0)
+(make-instance 'cl-asy:bin1d :xmin 0.2
+:xmax 0.3
+:content 0)
+(make-instance 'cl-asy:bin1d :xmin 0.3
+:xmax 0.4
+:content 0)
+(make-instance 'cl-asy:bin1d :xmin 0.4
+:xmax 0.5
+:content 1)
+(make-instance 'cl-asy:bin1d :xmin 0.5
+:xmax 0.6
+:content 0)
+(make-instance 'cl-asy:bin1d :xmin 0.6
+:xmax 0.7
+:content 0)
+(make-instance 'cl-asy:bin1d :xmin 0.7
+:xmax 0.8
+:content 0)
+(make-instance 'cl-asy:bin1d :xmin 0.8
+:xmax 0.9
+:content 0)
+(make-instance 'cl-asy:bin1d :xmin 0.9
+:xmax 1
+:content 0)
+) ;; Close the list of bins
+) ;; Close create-histogram-from-binning
+)
