@@ -43,6 +43,7 @@
 
 (defclass histo1d ()
   ((name :initarg :name :initform (error "Histogram needs a name"))
+   (title :initarg :title :initform "Histogram title")
    (bins :initarg :bins :initform (error "Histogram needs number of bins"))
    (xmin :initarg :xmin :initform (error "Histogram needs minimum x value"))
    (xmax :initarg :xmax :initform (error "Histogram needs maximum x value"))
