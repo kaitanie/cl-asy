@@ -1,0 +1,17 @@
+CL-ASY: Common Lisp - Asymptote
+===============================
+
+1. Minimalistic histogramming tool for Common Lisp
+--------------------------------------------------
+
+Simple data analysis and visualization library that contains:
+* Basic 1D histogramming for simple (scientific) use (done)
+* Support for experimental datapoints (todo)
+* Simple "ntuples" (column based data format for storing numerical data) (todo)
+
+2. Asymptote code generator for plotting
+----------------------------------------
+
+* Excellent output quality and default plotting style
+* Text (axis labels, legends) generated using LaTeX (great fonts, math typesetting fully supported)
+* Multiple output formats (PDF, EPS, etc.)
