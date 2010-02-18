@@ -26,6 +26,44 @@
     (cl-asy:histo1d-fill h1 x 1.0)
     h1))
 
+(defun create-randoms (number-of-entries)
+  (labels ((generate-randoms (acc n)
+	     (if (eq n 0)
+		 acc
+		 (generate-randoms (push (random 1.0) acc) (- n 1)))))
+    (generate-randoms '() number-of-entries)))
+	
+(defun create-random-histogram (number-of-entries)
+  (let ((randoms (create-randoms number-of-entries))
+	(histo (make-instance 'cl-asy:histo1d :name "randoms" :xmin -10.0 :xmax 10.0 :bins 100)))
+    (dolist (item randoms)
+      (cl-asy:histo1d-fill histo item 1.0))
+    histo))
+
+(defun create-gaussian-histogram (number-of-entries)
+  (let ((x 0)
+	(y 0)
+	(histo (make-instance 'cl-asy:histo1d :name "gauss" :xmin -10.0 :xmax 10.0 :bins 100)))
+    (labels ((collect-gaussian-randoms (acc number-of-randoms)
+	       (if (or (< number-of-randoms 0) (eq number-of-randoms 0))
+		   acc
+		   (let ((x1 0)
+			 (x2 0))
+		     (multiple-value-bind (x1 x2) (alexandria:gaussian-random)
+		       (progn (push x1 acc) (push x2 acc)))
+		       (collect-gaussian-randoms acc (- number-of-randoms 2))))))
+      (dolist (item (collect-gaussian-randoms '() number-of-entries))
+	(cl-asy:histo1d-fill histo item 1.0)))
+    histo))
+
+(defun test-cl-asy-random-histo ()
+  (let ((histo (create-random-histogram 10000))
+	(gauss (create-gaussian-histogram 10000)))
+    (with-asy-plot #P"/home/mael/tmp/histo.asy"
+		   (mix-plot
+;;		    (cl-asy:histo1d-plot histo)
+		    (cl-asy:histo1d-plot gauss)))))
+
 (defun test-cl-asy-plot1 ()
   (let ((h1 (plot-neutrons 10))
 	(h2 (plot-neutrons 20))
