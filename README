@@ -12,6 +12,8 @@ Simple data analysis and visualization library that contains:
 2. Asymptote code generator for plotting
 ----------------------------------------
 
+Uses Asymptote vector graphics language (http://asymptote.sourceforge.net)
+to generate publication quality graphics:
 * Excellent output quality and default plotting style
 * Text (axis labels, legends) generated using LaTeX (great fonts, math typesetting fully supported)
 * Multiple output formats (PDF, EPS, etc.)
