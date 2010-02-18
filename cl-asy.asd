@@ -8,5 +8,5 @@
 	       (:file "histo")
 	       (:file "datapoints")
 	       (:file "plot"))
-  )
-;;  :depends-on '())
+;;  )
+  :depends-on (:alexandria))

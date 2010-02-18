@@ -1,4 +1,5 @@
 (require :cl-asy)
+(require :alexandria)
 
 (in-package :cl-user)
 
