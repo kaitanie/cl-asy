@@ -47,11 +47,10 @@
     (labels ((collect-gaussian-randoms (acc number-of-randoms)
 	       (if (or (< number-of-randoms 0) (eq number-of-randoms 0))
 		   acc
-		   (let ((x1 0)
-			 (x2 0))
+		   (progn
 		     (multiple-value-bind (x1 x2) (alexandria:gaussian-random)
 		       (progn (push x1 acc) (push x2 acc)))
-		       (collect-gaussian-randoms acc (- number-of-randoms 2))))))
+		     (collect-gaussian-randoms acc (- number-of-randoms 2))))))
       (dolist (item (collect-gaussian-randoms '() number-of-entries))
 	(cl-asy:histo1d-fill histo item 1.0)))
     histo))
