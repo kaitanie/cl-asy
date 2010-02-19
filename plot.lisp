@@ -23,12 +23,15 @@
 		(generate-function ,name ,return-type ,list-of-args ,@body)
 		,name "();~%"))
 
-(defun generate-histo-plot-command (x-var y-var)
-  (concatenate 'string
-	       "histogram(" x-var ", " y-var ", nullpen, black, false);"))
+(defun generate-histo-plot-command (x-var y-var title)
+  (let ((command (concatenate 'string
+			      "histogram(" x-var ", " y-var ", nullpen, black, false")))
+    (if (not (null title))
+	(concatenate 'string command ", " title))
+    (concatenate 'string command ");~%")))
 
 (defmethod histo1d-plot ((histo histo1d))
-  (with-slots (name binning) histo
+  (with-slots (name title binning) histo
     (let ((x-array (append (list (bin1d-xmin (first binning)))
 			   (mapcar #'bin1d-xmax binning)))
 	  (contents-array (mapcar #'bin1d-content binning)))
@@ -41,7 +44,7 @@
 				   'string
 				   (generate-array-definition "x" "real[]" x-array)
 				   (generate-array-definition "y" "real[]" contents-array)
-				   (generate-histo-plot-command "x" "y"))))))
+				   (generate-histo-plot-command "x" "y" title))))))
 
 (defun generate-asy-header ()
   (concatenate 'string
