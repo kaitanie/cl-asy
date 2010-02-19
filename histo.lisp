@@ -53,8 +53,7 @@
 (defmethod initialize-instance :after ((histo histo1d) &key)
   (with-slots (bins xmin xmax manual-binning binning) histo
     (if (not manual-binning)
-	(setf binning (create-linear-binning bins xmin xmax))
-	(setf binning '()))))
+	(setf binning (create-linear-binning bins xmin xmax)))))
 
 (defmethod histo1d-add-bin ((histo histo1d) bin)
   (with-slots (binning) histo
