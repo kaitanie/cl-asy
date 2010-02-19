@@ -3,7 +3,7 @@
 
 (in-package :cl-user)
 
-(defmacro with-asy-plot (file &rest body)
+(defmacro with-asy-plot (file (&key legend) &rest body)
   `(with-open-file (*standard-output* ,file :direction :output
 				      :if-exists :supersede)
      (format t "import graph;~%")
@@ -11,7 +11,8 @@
      (format t "size(20cm, 20cm, IgnoreAspect);~%")
      (format t ,@body)
      (format t "xaxis(\"$x$\",BottomTop,LeftTicks);~%")
-     (format t "yaxis(\"$dP/dx$\",LeftRight,RightTicks(trailingzero));~%")))
+     (format t "yaxis(\"$dP/dx$\",LeftRight,RightTicks(trailingzero));~%")
+     (if ,legend (format t "add(pic,legend(pic),point(pic,NW),20SE,UnFill);~%"))))
 
 (defmacro mix-plot (&rest body)
   `(progn (concatenate 'string
@@ -59,6 +60,7 @@
   (let ((histo (create-random-histogram 10000))
 	(gauss (create-gaussian-histogram 10000)))
     (with-asy-plot #P"/home/mael/tmp/histo.asy"
+		   (:legend t)
 		   (mix-plot
 ;;		    (cl-asy:histo1d-plot histo)
 		    (cl-asy:histo1d-plot gauss)))))
