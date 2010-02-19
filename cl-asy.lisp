@@ -12,4 +12,6 @@
 	   :datapoint2d-y
 	   :datagraph2d
 	   :datagraph2d-plot
-	   :datapoint2d))
+	   :datapoint2d
+	   :with-asy-plot
+	   :mix-plot))

@@ -3,21 +3,6 @@
 
 (in-package :cl-user)
 
-(defmacro with-asy-plot (file (&key legend) &rest body)
-  `(with-open-file (*standard-output* ,file :direction :output
-				      :if-exists :supersede)
-     (format t "import graph;~%")
-     (format t "import stats;~%")
-     (format t "size(20cm, 20cm, IgnoreAspect);~%")
-     (format t ,@body)
-     (format t "xaxis(\"$x$\",BottomTop,LeftTicks);~%")
-     (format t "yaxis(\"$dP/dx$\",LeftRight,RightTicks(trailingzero));~%")
-     (if ,legend (format t "add(pic,legend(pic),point(pic,NW),20SE,UnFill);~%"))))
-
-(defmacro mix-plot (&rest body)
-  `(progn (concatenate 'string
-		       ,@body)))
-
 (defun plot-neutrons (x)
   (let ((h1 (make-instance 'cl-asy:histo1d
 			   :name (concatenate 'string "neutronEnergies" (write-to-string x))
@@ -59,9 +44,9 @@
 (defun test-cl-asy-random-histo ()
   (let ((histo (create-random-histogram 10000))
 	(gauss (create-gaussian-histogram 10000)))
-    (with-asy-plot #P"/home/mael/tmp/histo.asy"
+    (cl-asy:with-asy-plot #P"/home/mael/tmp/histo.asy"
 		   (:legend t)
-		   (mix-plot
+		   (cl-asy:mix-plot
 ;;		    (cl-asy:histo1d-plot histo)
 		    (cl-asy:histo1d-plot gauss)))))
 
@@ -69,9 +54,9 @@
   (let ((h1 (plot-neutrons 10))
 	(h2 (plot-neutrons 20))
 	(g1 (make-instance 'cl-asy:datagraph2d)))
-    (with-asy-plot #P"/home/mael/tmp/test.asy"
+    (cl-asy:with-asy-plot #P"/home/mael/tmp/test.asy"
 ;;      (cl-asy:histo1d-plot h1))))
-      (mix-plot (cl-asy:histo1d-plot h1)
-		(cl-asy:histo1d-plot h2)))
+      (cl-asy:mix-plot (cl-asy:histo1d-plot h1)
+		       (cl-asy:histo1d-plot h2)))
     (cl-asy:histo1d-print h1)))
 ;;		(cl-asy:datagraph2d-plot g1)))))

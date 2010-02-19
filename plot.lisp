@@ -1,5 +1,20 @@
 (in-package :cl-asy)
 
+(defmacro with-asy-plot (file (&key legend) &rest body)
+  `(with-open-file (*standard-output* ,file :direction :output
+				      :if-exists :supersede)
+     (format t "import graph;~%")
+     (format t "import stats;~%")
+     (format t "size(20cm, 20cm, IgnoreAspect);~%")
+     (format t ,@body)
+     (format t "xaxis(\"$x$\",BottomTop,LeftTicks);~%")
+     (format t "yaxis(\"$dP/dx$\",LeftRight,RightTicks(trailingzero));~%")
+     (if ,legend (format t "add(legend(),point(NW),SE,UnFill);~%"))))
+
+(defmacro mix-plot (&rest body)
+  `(progn (concatenate 'string
+		       ,@body)))
+
 (defun array-as-string (array)
   (let ((array-str (mapcar #'write-to-string array)))
     (reduce #'(lambda (x y)
