@@ -116,6 +116,8 @@
 (create-histogram-from-binning :name "histo"
 :title "My histogram title"
 :nbins 10
+:xmin 0.0
+:xmax 1.0
 :binning (list
 (make-instance 'cl-asy:bin1d :xmin 0
 :xmax 0.1
