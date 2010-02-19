@@ -45,6 +45,8 @@
   ((name :initarg :name :initform (error "Histogram needs a name"))
    (title :initarg :title :initform "Histogram title")
    (bins :initarg :bins :initform (error "Histogram needs number of bins"))
+   (overflow :initform 0.0)
+   (underflow :initform 0.0)
    (xmin :initarg :xmin :initform (error "Histogram needs minimum x value"))
    (xmax :initarg :xmax :initform (error "Histogram needs maximum x value"))
    (manual-binning :initarg :manual-binning :initform nil)
@@ -60,16 +62,22 @@
     (setf binning (append binning (list bin)))))
 
 (defmethod histo1d-fill ((histo histo1d) value weight)
-  (with-slots (binning) histo
-    (dolist (bin binning)
-      (with-slots (xmin xmax) bin 
-	(if (and (>= value xmin) (< value xmax))
-	    (bin1d-fill bin value weight))))))
+  (with-slots (xmin xmax overflow underflow) histo
+    (cond ((< value xmin) (setf underflow (+ underflow weight)))
+	  ((or (> value xmax) (eq value xmax)) (setf overflow (+ overflow weight)))
+	  ( t
+	   (with-slots (binning) histo
+	     (dolist (bin binning)
+	       (with-slots (xmin xmax) bin 
+		 (if (and (>= value xmin) (< value xmax))
+		     (bin1d-fill bin value weight)))))))))
 
 (defmethod histo1d-print ((histo histo1d))
-  (with-slots (binning) histo
+  (with-slots (binning underflow overflow) histo
     (dolist (bin binning)
-      (bin1d-print bin))))
+      (bin1d-print bin))
+    (format t (concatenate 'string "Underflow: " (write-to-string underflow) "~%"))
+    (format t (concatenate 'string "Overflow: " (write-to-string overflow) "~%"))))
 
 (defmethod histo1d-create-from-binning ((histo histo1d) x-mins x-maxs contents)
   (with-slots (binning) histo
