@@ -3,6 +3,7 @@
 (defclass bin1d ()
   ((xmin :initarg :xmin :initform (error "Minimum edge required.."))
    (xmax :initarg :xmax :initform (error "Maximum edge required.."))
+   (counts :initarg :counts :initform 0)
    (content :initarg :content :initform 0.0)))
 
 (defmethod bin1d-xmin ((bin bin1d))
@@ -24,17 +25,18 @@
 (defmethod bin1d-point ((bin bin1d))
   (let ((x-value (bin1d-middle bin))
 	(y-value (bin1d-content bin)))
-    '(x-value y-value)))
-
+    (list x-value y-value)))
 
 (defmethod bin1d-set-content ((bin bin1d) value)
   (with-slots (content) bin
     (setf content value)))
 
 (defmethod bin1d-fill ((bin bin1d) value weight)
-  (with-slots (xmin xmax content) bin
+  (with-slots (xmin xmax counts content) bin
     (if (and (>= value xmin) (< xmax))
-	(setf content (+ content weight))
+	(progn
+	  (setf content (+ content weight))
+	  (incf counts))
 	(error "Value is outside the bin!"))))
 
 (defmethod bin1d-print ((bin bin1d))
@@ -57,6 +59,7 @@
    (bins :initarg :bins :initform (error "Histogram needs number of bins"))
    (overflow :initform 0.0)
    (underflow :initform 0.0)
+   (counts :initform 0)
    (xmin :initarg :xmin :initform (error "Histogram needs minimum x value"))
    (xmax :initarg :xmax :initform (error "Histogram needs maximum x value"))
    (manual-binning :initarg :manual-binning :initform nil)
@@ -72,15 +75,17 @@
     (setf binning (append binning (list bin)))))
 
 (defmethod histo1d-fill ((histo histo1d) value weight)
-  (with-slots (xmin xmax overflow underflow) histo
+  (with-slots (xmin xmax overflow underflow counts) histo
     (cond ((< value xmin) (setf underflow (+ underflow weight)))
 	  ((or (> value xmax) (eq value xmax)) (setf overflow (+ overflow weight)))
 	  ( t
-	   (with-slots (binning) histo
-	     (dolist (bin binning)
-	       (with-slots (xmin xmax) bin 
-		 (if (and (>= value xmin) (< value xmax))
-		     (bin1d-fill bin value weight)))))))))
+	   (progn
+	     (incf counts)
+	     (with-slots (binning) histo
+	       (dolist (bin binning)
+		 (with-slots (xmin xmax) bin
+		   (if (and (>= value xmin) (< value xmax))
+		       (bin1d-fill bin value weight))))))))))
 
 (defmethod histo1d-print ((histo histo1d))
   (with-slots (binning underflow overflow) histo
