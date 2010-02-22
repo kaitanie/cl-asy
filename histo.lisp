@@ -13,9 +13,19 @@
   (with-slots (xmax) bin
     xmax))
 
+(defmethod bin1d-middle ((bin bin1d))
+  (with-slots (xmax xmin) bin
+    (/ (+ xmax xmin) 2.0)))
+
 (defmethod bin1d-content ((bin bin1d))
   (with-slots (content) bin
     content))
+
+(defmethod bin1d-point ((bin bin1d))
+  (let ((x-value (bin1d-middle bin))
+	(y-value (bin1d-content bin)))
+    '(x-value y-value)))
+
 
 (defmethod bin1d-set-content ((bin bin1d) value)
   (with-slots (content) bin
