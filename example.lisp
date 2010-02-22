@@ -41,6 +41,13 @@
 	(cl-asy:histo1d-fill histo item 1.0)))
     histo))
 
+(defun test-cl-gnuplot-random-histo ()
+  (let* ((gauss (create-gaussian-histogram 10000)))
+;;	 (plot (cl-asy:histo1d-gnuplot gauss)))
+    (clnuplot:write-plot
+     (cl-asy:histo1d-gnuplot gauss)
+     :pdf)))
+
 (defun test-cl-asy-random-histo ()
   (let ((histo (create-random-histogram 10000))
 	(gauss (create-gaussian-histogram 10000)))

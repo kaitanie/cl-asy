@@ -45,6 +45,21 @@
 	(concatenate 'string command ", " title))
     (concatenate 'string command ");~%")))
 
+(defmethod histo1d-gnuplot ((histo histo1d))
+  (with-slots (name title binning) histo
+    (let ((points (mapcar #'bin1d-point binning)))
+      (clnuplot:make-plot :lines-points
+			  points
+			   :pointsize 2.0
+			   :linewidth 3.0
+			   :filename name
+			   :xlabel "X"
+			   :ylabel "Y"
+			   :x-coord #'first
+			   :y-coord #'second
+			   :title title
+			   :ymin 0.0))))
+
 (defmethod histo1d-plot ((histo histo1d))
   (with-slots (name title binning) histo
     (let ((x-array (append (list (bin1d-xmin (first binning)))

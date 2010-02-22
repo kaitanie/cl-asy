@@ -4,6 +4,7 @@
 	   :histo1d-fill
 	   :histo1d-print
 	   :histo1d-plot
+	   :histo1d-gnuplot
 	   :create-linear-binning
 	   :bin1d
 	   :create-histogram-from-binning
